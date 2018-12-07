@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cab="http://www.ujf-grenoble.fr/l3miage/medical"
+           elementFormDefault="qualified"
+           targetNamespace="http://www.ujf-grenoble.fr/l3miage/medical">
+    
+    <xs:element name="cabinet" type="cab:Cabinet"/>
+        
+        <xs:complexType name="Cabinet">
+            <xs:sequence>
+                <xs:element name="nom" type="xs:string"/>
+                <xs:element name="adresse" type="cab:Adresse"/>
+                <xs:element name="infirmiers" type="cab:Infirmiers"/>
+                <xs:element name="patients" type="cab:Patients"/>
+            </xs:sequence>
+        </xs:complexType>
+        
+        
+        <xs:complexType name="Adresse">
+            <xs:sequence>
+                <xs:element name="étage" type="cab:ResInt" minOccurs="0"/>
+                <xs:element name="numéro" type="xs:int" minOccurs="0"/>
+                <xs:element name="rue" type="xs:string"/>
+                <xs:element name="ville" type="xs:string"/>
+                <xs:element name="codePostal" type="cab:CodePostal"/>
+            </xs:sequence>
+        </xs:complexType>
+        
+        <xs:complexType name="Infirmiers">
+            <xs:sequence>
+                <xs:element name="infirmier" type="cab:Infirmier" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+        
+        <xs:complexType name="Patients">
+            <xs:sequence>
+                <xs:element name="patient" type="cab:Patient" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+        
+        <xs:simpleType name="CodePostal">
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[0-9][0-9]\d\d\d"/>
+            </xs:restriction>
+        </xs:simpleType>
+
+        <xs:simpleType name="ResInt">
+            <xs:restriction base="xs:int">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="1000"/>
+            </xs:restriction>
+        </xs:simpleType>
+        
+        <xs:complexType name="Infirmier">
+            <xs:sequence>
+                <xs:element name="nom" type="xs:string"/>
+                <xs:element name="prénom" type="xs:string"/>
+                <xs:element name="photo" type="cab:Photo"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="cab:Id"/>
+        </xs:complexType>
+        
+        <xs:complexType name="Patient">
+            <xs:sequence>
+                <xs:element name="nom" type="xs:string"/>
+                <xs:element name="prénom" type="xs:string"/>
+                <xs:element name="sexe" type="cab:Sexe"/>
+                <xs:element name="naissance" type="xs:date"/>
+                <xs:element name="numéro" type="cab:Numero"/>
+                <xs:element name="adresse" type="cab:Adresse"/>
+                <xs:element name="visite" type="cab:Visite" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+        
+        <xs:simpleType name="Numero">
+            <xs:restriction base="xs:string">
+                <xs:pattern value="([1-4]|[7-8])([0-9][0-9])((0[0-9])|(1[0-2])|(6[2-3]))((((([0-1][1-9])|10)|(2A)|(2B)|(2[1-9])|([3-9][0-9]))(([0-9][0-8][1-9])|([0-9][1-8][0-9])|([1-9][0-9]00)))|((9[7-8][0-9])(([0-8][1-9])|([1-9]0)))|((99)(([0-9][0-8][1-9])|([0-9][1-8][0-9])|([1-9][0-9]00))))(([0-9][0-8][1-9])|([0-9][1-9][0-9])|([1-9]00))((0[1-9])|([1-8][0-9])|(9[0-7]))"/>
+            </xs:restriction>
+        </xs:simpleType>
+
+        <xs:simpleType name="Id">
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[0-9][0-9][0-9]"/>
+            </xs:restriction>
+        </xs:simpleType>
+
+         <xs:simpleType name="Photo">
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[a-zA-Z]*((.jpg)|(.jpeg)|(.gif)|(.png))"/>
+            </xs:restriction>
+        </xs:simpleType>
+        
+        <xs:simpleType name="Sexe">
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[MF]"/>
+            </xs:restriction>
+        </xs:simpleType>
+        
+        <xs:complexType name="Visite">
+            <xs:sequence>
+                <xs:element name="acte" type="cab:Acte" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="date" type="xs:date" use="required"/>
+            <xs:attribute name="intervenant" type="cab:Id"/>
+        </xs:complexType>
+        
+        <xs:complexType name="Acte">
+            <xs:attribute name="id" type="xs:int"/>
+        </xs:complexType>
+                
+
+</xs:schema>
